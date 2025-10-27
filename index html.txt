@@ -1,0 +1,136 @@
+coffee-shop-app/
+│
+├── index.html        ← main QR scanner
+├── menu.html         ← menu page (shown after scanning)
+└── style.css         ← optional styling
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Coffee Shop QR Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>☕ Welcome to Aroma Coffee</h1>
+  <p>Scan the QR on your table to view the menu</p>
+
+  <div id="reader"></div>
+  <div id="result"></div>
+
+  <script>
+    function onScanSuccess(decodedText) {
+      // If the QR contains "menu", go to that page
+      if (decodedText.includes("menu.html")) {
+        window.location.href = decodedText;
+      } else {
+        document.getElementById('result').innerHTML =
+          `✅ Scanned: <a href="${decodedText}" target="_blank">${decodedText}</a>`;
+      }
+    }
+
+    function onScanError(errorMessage) {
+      // Ignore errors
+    }
+
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader",
+      { fps: 10, qrbox: 250 }
+    );
+    html5QrcodeScanner.render(onScanSuccess, onScanError);
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Aroma Coffee Menu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>☕ Aroma Coffee Menu</h1>
+  <div class="menu">
+    <div class="item">
+      <h2>Espresso</h2>
+      <p>Strong and rich Italian coffee shot.</p>
+      <span>$2.50</span>
+    </div>
+    <div class="item">
+      <h2>Cappuccino</h2>
+      <p>Espresso with steamed milk and foam.</p>
+      <span>$3.00</span>
+    </div>
+    <div class="item">
+      <h2>Latte</h2>
+      <p>Creamy milk coffee with a smooth taste.</p>
+      <span>$3.50</span>
+    </div>
+    <div class="item">
+      <h2>Mocha</h2>
+      <p>Chocolate flavored coffee delight.</p>
+      <span>$4.00</span>
+    </div>
+    <div class="item">
+      <h2>Cold Brew</h2>
+      <p>Slow-steeped for a smooth, bold flavor.</p>
+      <span>$3.75</span>
+    </div>
+  </div>
+  <a class="back" href="index.html">← Back to Scanner</a>
+</body>
+</html>
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f6f3ee;
+  color: #3b2e2a;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  color: #5b3924;
+  margin-bottom: 10px;
+}
+
+#reader {
+  width: 300px;
+  margin: 20px auto;
+}
+
+.menu {
+  display: grid;
+  gap: 15px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.item {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.item h2 {
+  margin: 0;
+  color: #4e342e;
+}
+
+.item span {
+  font-weight: bold;
+  display: block;
+  margin-top: 5px;
+  color: #795548;
+}
+
+.back {
+  display: inline-block;
+  margin-top: 30px;
+  text-decoration: none;
+  background: #5b3924;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
